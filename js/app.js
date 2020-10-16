@@ -1,5 +1,4 @@
 // PLANS
-// 1. Click on heart add cocktail to LocalStorage then put in favorites and heart have different color if cocktail is in favorites.
 // 2. Mobile responsive
 // 
 
@@ -49,7 +48,6 @@ function createFavorites(img, name) {
 
     favoritesBox.querySelector('.favorites__delete').addEventListener('click', function() {
         favoritesBox.remove();
-        // const namOfCocktail = favoritesBox.querySelector('.favorites__cocktail-name').
         localStorage.removeItem(name)
     })
 }
@@ -95,7 +93,14 @@ sectionBottom.addEventListener('click', function(e){
         if(!localStorage.getItem(name)){
             const localObj = {cocktail: name, imgSrc: img};
             localStorage.setItem(name, JSON.stringify(localObj))
-            showFavoritesFromLs();
+
+            const objLocal = JSON.parse(localStorage.getItem(name));
+
+            console.log(objLocal);
+
+            createFavorites(objLocal.imgSrc, objLocal.cocktail);
+
+            // showFavoritesFromLs();
         }
     }
 })
@@ -105,11 +110,7 @@ const showFavoritesFromLs = () => {
 
     for (var i = 0; i < localStorage.length; i++){
         const obj = JSON.parse(localStorage.getItem(localStorage.key(i)));
-
-        
-        
         createFavorites(obj.imgSrc, obj.cocktail)
-        console.log(obj);
      }
 }
 
@@ -165,4 +166,5 @@ const fillModalWithData = (data) => {
 }
 
 // Init
+showFavoritesFromLs();
 getRandomCocktail();
