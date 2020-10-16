@@ -367,16 +367,19 @@ body {
         overflow: hidden;
     }
 
-    /* .modal {
-        height: 100vh;
-        width: 100vw;
-        background: linear-gradient(to right, rgba(0,0,0, .95), rgba(0,0,0, .95));
-    } */
-
     .modal__cocktail {
         max-width: 100%;
         background-color: #fff;
         border-radius: 0;
         margin: 0;
     }
+
+    .cocktail-name {
+        font-size: 2rem;
+    }
+
+    .cocktail-heart {
+        font-size: 4.5rem;
+    } 
+
 }

@@ -1,8 +1,3 @@
-// PLANS
-// 2. Mobile responsive
-// 
-
-
 const favorites = document.querySelector('.favorites');
 const form = document.querySelector('#form');
 const randomCocktail = document.querySelector('#random-cocktail');
@@ -59,6 +54,14 @@ const removeAllCocktails = () => {
     }
 }
 
+// Display elements from LocalStorage to Favorites section
+const showFavoritesFromLs = () => {
+
+    for (var i = 0; i < localStorage.length; i++){
+        const obj = JSON.parse(localStorage.getItem(localStorage.key(i)));
+        createFavorites(obj.imgSrc, obj.cocktail)
+     }
+}
 
 
 // LISTENERS
@@ -105,18 +108,10 @@ sectionBottom.addEventListener('click', function(e){
     }
 })
 
-// Display elements from LocalStorage to Favorites section
-const showFavoritesFromLs = () => {
-
-    for (var i = 0; i < localStorage.length; i++){
-        const obj = JSON.parse(localStorage.getItem(localStorage.key(i)));
-        createFavorites(obj.imgSrc, obj.cocktail)
-     }
-}
-
 
 // Close Modal when its open
 document.querySelector('.modal__close').addEventListener('click', function() {
+    e.preventDefault();
     modal.classList.remove('active');
 })
 
@@ -133,7 +128,6 @@ form.addEventListener('submit', function(e){
             }
         })
         .catch(err => console.log(err))
-
     e.preventDefault();
 })
 
