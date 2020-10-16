@@ -9,7 +9,7 @@ const modal = document.querySelector('.modal');
 const getRandomCocktail = async () => {
     const response = await fetch ('https://www.thecocktaildb.com/api/json/v1/1/random.php');
     const data = await response.json();
-    addToUi(data.drinks[0]) 
+    addToUi(data.drinks[0]);
 }
 
 // Comunications with server for cocktail by name
@@ -31,6 +31,14 @@ function addToUi(data){
     sectionBottom.appendChild(cocktailBox);
 }
 
+// Remove all cocktails
+const removeAllCocktails = () => {
+    while(sectionBottom.hasChildNodes()){
+        sectionBottom.removeChild(sectionBottom.firstChild);
+    }
+}
+
+
 function createFavorites(img, name) {
     const favoritesBox = document.createElement('div');
     favoritesBox.classList.add('favorites__box');
@@ -41,17 +49,20 @@ function createFavorites(img, name) {
     `
     favorites.appendChild(favoritesBox);
 
-    favoritesBox.querySelector('.favorites__delete').addEventListener('click', function() {
-        favoritesBox.remove();
-        localStorage.removeItem(name)
+    favoritesBox.addEventListener('click', function(e) {
+        console.log(e.target);
+        if(e.target.classList.contains('favorites__delete')){
+            favoritesBox.remove();
+            localStorage.removeItem(name)
+            toggleFavorites();
+        } else if(e.target.classList.contains('favorites__cocktail-name')){
+            searchByName(name)
+                .then(data => fillModalWithData(data))
+                .catch(err => console.log(err));
+                modal.classList.add('active');
+        }
+        
     })
-}
-
-// Remove all cocktails
-const removeAllCocktails = () => {
-    while(sectionBottom.hasChildNodes()){
-        sectionBottom.removeChild(sectionBottom.firstChild);
-    }
 }
 
 // Display elements from LocalStorage to Favorites section
@@ -63,13 +74,66 @@ const showFavoritesFromLs = () => {
      }
 }
 
+// Keep favorites container depends does Local Storage have items
+const toggleFavorites = () => {
+    const favorites = document.querySelector('.favorites');
+    if(localStorage.length < 1){
+        favorites.style.display = 'none';
+    } else {
+        favorites.style.display = 'flex';
+    }
+}
+
+// Entering data to modal
+const fillModalWithData = (data) => {
+    const objData = data[0];
+    modal.querySelector('.heading-second').innerText = data[0].strDrink;
+    modal.querySelector('.modal__img').src = data[0].strDrinkThumb;
+    modal.querySelector('.how-to').innerText = data[0].strInstructions;
+
+    for(let i = 1; i <= 15; i++){
+        let ingredient = 'strIngredient' + i;
+        let measure = 'strMeasure' + i;
+
+        const li = document.createElement('li');
+
+        if(objData[ingredient] !== null){
+            if(objData[measure] !== null){
+                li.innerText = `${objData[ingredient]} - ${objData[measure]}`;
+            } else {
+                li.innerText = objData[ingredient];
+            }
+
+            li.classList.add('ingredient__item');
+            document.querySelector('.ingredient').appendChild(li);
+        }
+    }
+}
+
 
 // LISTENERS
 // Get rando cocktail from server and display only that one in UI
 randomCocktail.addEventListener('click', function(){
-    removeAllCocktails()
+    removeAllCocktails();
     getRandomCocktail();
+    toggleFavorites();
 });
+
+// Search for cocktails by name and display them in UI
+form.addEventListener('submit', function(e){
+    removeAllCocktails();
+
+    const cocktail = form.querySelector('.input__text').value;
+    
+    searchByName(cocktail)
+        .then(data => {
+            for(let element of data){
+                addToUi(element);
+            }
+        })
+        .catch(err => console.log(err))
+    e.preventDefault();
+})
 
 
 sectionBottom.addEventListener('click', function(e){
@@ -99,66 +163,18 @@ sectionBottom.addEventListener('click', function(e){
 
             const objLocal = JSON.parse(localStorage.getItem(name));
 
-            console.log(objLocal);
-
             createFavorites(objLocal.imgSrc, objLocal.cocktail);
-
-            // showFavoritesFromLs();
+            toggleFavorites();
         }
     }
 })
-
 
 // Close Modal when its open
 document.querySelector('.modal__close').addEventListener('click', function() {
-    e.preventDefault();
     modal.classList.remove('active');
 })
 
-// Search for cocktails by name and display them in UI
-form.addEventListener('submit', function(e){
-    removeAllCocktails();
-
-    const cocktail = form.querySelector('.input__text').value;
-    
-    searchByName(cocktail)
-        .then(data => {
-            for(let element of data){
-                addToUi(element);
-            }
-        })
-        .catch(err => console.log(err))
-    e.preventDefault();
-})
-
-// Entering data to modal
-const fillModalWithData = (data) => {
-    const objData = data[0];
-    modal.querySelector('.heading-second').innerText = data[0].strDrink;
-    modal.querySelector('.modal__img').src = data[0].strDrinkThumb;
-    modal.querySelector('.how-to').innerText = data[0].strInstructions;
-
-    // TRY
-
-    for(let i = 1; i <= 15; i++){
-        let ingredient = 'strIngredient' + i;
-        let measure = 'strMeasure' + i;
-
-        const li = document.createElement('li');
-
-        if(objData[ingredient] !== null){
-            if(objData[measure] !== null){
-                li.innerText = `${objData[ingredient]} - ${objData[measure]}`;
-            } else {
-                li.innerText = objData[ingredient];
-            }
-
-            li.classList.add('ingredient__item');
-            document.querySelector('.ingredient').appendChild(li);
-        }
-    }
-}
 
 // Init
 showFavoritesFromLs();
-getRandomCocktail();
+toggleFavorites();
