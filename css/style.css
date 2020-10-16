@@ -42,7 +42,7 @@ body {
 
 /* Styling */
 .container {
-    max-width: 70rem;
+    max-width: 50rem;
     background-color: #fff;
     margin: 5rem auto;
     border-radius: 1rem;
@@ -101,7 +101,7 @@ body {
     display: flex;
     /* display: none; */
     justify-content: center;
-    height: 33.5rem;
+    height: 25rem;
     width: 100%;
     background: linear-gradient(to bottom, #FFC09C 0%, #676767 100%);
     clip-path: polygon(100% 0, 100% 50%, 20% 50%, 0 100%, 0 0);
@@ -110,8 +110,8 @@ body {
 
 .favorites__box {
     background: #fff;
-    height: 10rem;
-    width: 10rem;
+    height: 8.5rem;
+    width: 8.5rem;
     border-radius: 50%;
     display: flex;
     /* display: none; */
@@ -126,20 +126,20 @@ body {
     position: absolute;
     color: #fff;
     right: 0;
-    top: -3rem;
+    top: -2rem;
     /* top: 0; */
     /* right: 0; */
-    font-size: 5rem;
+    font-size: 4rem;
     font-weight: bold;
     z-index: 100;
     opacity: 0;
     transition: all .2s;
     cursor: pointer;
-
+    backface-visibility: hidden;
 }
 
 .favorites__box:hover .favorites__img {
-    filter: blur(4px);
+    filter: blur(2px);
 }
 
 .favorites__box:hover .favorites__cocktail-name,
@@ -190,7 +190,7 @@ body {
     border-radius: 2.5rem;
     padding-left: 2rem;
     outline: none;
-    font-size: 1.7rem;
+    font-size: 1.6rem;
     font-style: italic;
     font-family: inherit;
     font-weight: 300;
@@ -202,7 +202,7 @@ body {
 
 .input__text::placeholder {
     color: #c7bbb4;
-    font-size: 1.7rem;
+    font-size: 1.6rem;
     /* font-family: inherit; */
 }
 
@@ -213,7 +213,7 @@ body {
     border: none;
     background: linear-gradient(to bottom, #FFC09C 0%, #676767 100%);
     border-radius: 2.5rem;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: #fff;
     outline: none;
     cursor: pointer;

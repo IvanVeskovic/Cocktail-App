@@ -1,3 +1,9 @@
+// PLANS
+// 1. Click on heart add cocktail to LocalStorage then put in favorites and heart have different color if cocktail is in favorites.
+// 2. Mobile responsive
+// 
+
+
 const favorites = document.querySelector('.favorites');
 const form = document.querySelector('#form');
 const randomCocktail = document.querySelector('#random-cocktail');
@@ -19,7 +25,7 @@ const searchByName = async (name) => {
     return data.drinks;
 }
 
-
+// add element to UI
 function addToUi(data){
     const cocktailBox = document.createElement('div');
     cocktailBox.classList.add('cocktail-box');
@@ -29,7 +35,6 @@ function addToUi(data){
         <span class="cocktail-heart">&#10084</span>
     `
     sectionBottom.appendChild(cocktailBox);
-    console.log(data);
 }
 
 function createFavorites(img, name) {
@@ -41,6 +46,12 @@ function createFavorites(img, name) {
         <small class="favorites__cocktail-name">${name}</small>
     `
     favorites.appendChild(favoritesBox);
+
+    favoritesBox.querySelector('.favorites__delete').addEventListener('click', function() {
+        favoritesBox.remove();
+        // const namOfCocktail = favoritesBox.querySelector('.favorites__cocktail-name').
+        localStorage.removeItem(name)
+    })
 }
 
 // Remove all cocktails
@@ -50,15 +61,20 @@ const removeAllCocktails = () => {
     }
 }
 
+
+
 // LISTENERS
+// Get rando cocktail from server and display only that one in UI
 randomCocktail.addEventListener('click', function(){
     removeAllCocktails()
     getRandomCocktail();
 });
 
+
 sectionBottom.addEventListener('click', function(e){
     const target = e.target;
     
+    // If click on cocktail name open modal with inforamtion of that.
     if(target.classList.contains('cocktail-name')){
         let name = target.innerText;
         searchByName(name)
@@ -66,23 +82,44 @@ sectionBottom.addEventListener('click', function(e){
             .catch(err => console.log(err));
 
         modal.classList.add('active')
+
+    // If click on heart inser data in LocalStorage and than load it in favorites section
     } else if (target.classList.contains('cocktail-heart')) {
+
+        // Get information about cocktail
         const parentEl = target.parentElement;
         const img = parentEl.querySelector('.cocktail-img').src;
         const name = parentEl.querySelector('.cocktail-name').innerText;
-        console.log(img, name);
-        createFavorites(img, name);
+
+        // Put it in local storage
+        if(!localStorage.getItem(name)){
+            const localObj = {cocktail: name, imgSrc: img};
+            localStorage.setItem(name, JSON.stringify(localObj))
+            showFavoritesFromLs();
+        }
     }
 })
 
+// Display elements from LocalStorage to Favorites section
+const showFavoritesFromLs = () => {
+
+    for (var i = 0; i < localStorage.length; i++){
+        const obj = JSON.parse(localStorage.getItem(localStorage.key(i)));
+
+        
+        
+        createFavorites(obj.imgSrc, obj.cocktail)
+        console.log(obj);
+     }
+}
+
+
+// Close Modal when its open
 document.querySelector('.modal__close').addEventListener('click', function() {
     modal.classList.remove('active');
 })
 
-// document.querySelector('.favorites__delete').addEventListener('click', function(e){
-//     e.target.parentElement.remove();
-// })
-
+// Search for cocktails by name and display them in UI
 form.addEventListener('submit', function(e){
     removeAllCocktails();
 
@@ -99,6 +136,7 @@ form.addEventListener('submit', function(e){
     e.preventDefault();
 })
 
+// Entering data to modal
 const fillModalWithData = (data) => {
     const objData = data[0];
     modal.querySelector('.heading-second').innerText = data[0].strDrink;
@@ -128,8 +166,3 @@ const fillModalWithData = (data) => {
 
 // Init
 getRandomCocktail();
-
-
-searchByName('Sex')
-    .then(data => console.log(data))
-    .catch(err => console.log(err));
