@@ -55,7 +55,8 @@ function createFavorites(img, name) {
             favoritesBox.remove();
             localStorage.removeItem(name)
             toggleFavorites();
-        } else if(e.target.classList.contains('favorites__cocktail-name')){
+        } else if(e.target.classList.contains('favorites__cocktail-name') ||
+                  e.target.classList.contains('favorites__img')){
             searchByName(name)
                 .then(data => fillModalWithData(data))
                 .catch(err => console.log(err));

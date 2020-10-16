@@ -416,6 +416,32 @@ body {
     .cocktail-heart {
         font-size: 4.5rem;
     } 
+
+    .favorites__delete {
+        opacity: 1;
+    }
+
+    .favorites__cocktail-name {
+        display: none;
+    }
+
+    .favorites__box:hover .favorites__img {
+        -webkit-filter: none;
+                filter: none;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .input__text {
+        font-size: 1.3rem;
+    }
+    .input__text::placeholder {
+        font-size: 1.4rem;
+    }
+
+    .btn {
+        font-size: 1.2rem;
+    }
 }
 
 
