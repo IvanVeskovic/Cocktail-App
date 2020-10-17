@@ -68,6 +68,7 @@ body {
 
 .section__bottom {
     overflow: hidden;
+    padding: 3rem;
 }
 /* ############# Components ################ */
 
@@ -315,13 +316,16 @@ body {
     width: 100%;
     display: inline-block;
     position: relative;
-    padding: 3rem;
+    /* padding: 3rem; */
+    margin: 1rem 0;
+    border-radius: 1rem;
+    overflow: hidden;
 }
 
 .cocktail-name {
     position: absolute;
-    bottom: 5rem;
-    right: 3rem;
+    bottom: 3rem;
+    right: -1rem;
     background: linear-gradient(to right, rgb(255, 255, 255),  rgb(226, 226, 226));
     padding: 1rem 2.5rem;
     font-size: 2.3rem;
@@ -344,8 +348,8 @@ body {
     font-size: 5rem;
     color: #fff;
     position: absolute;
-    bottom: 4rem;
-    left: 5rem;
+    bottom: 2rem;
+    left: 3rem;
     cursor: pointer;
     background: linear-gradient(to right, rgb(224, 85, 85),  rgb(145, 66, 66));
     -webkit-background-clip: text;
