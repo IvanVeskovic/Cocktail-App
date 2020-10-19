@@ -198,6 +198,7 @@ body {
 .favorites__delete {
     position: absolute;
     color: #fff;
+    z-index: 30;
     right: 0;
     top: -2rem;
     display: inline-block;
