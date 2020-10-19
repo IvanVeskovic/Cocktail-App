@@ -68,7 +68,7 @@ body {
 
 .section__bottom {
     overflow: hidden;
-    padding: 3rem;
+    padding: 0 3rem;
 }
 /* ############# Components ################ */
 
@@ -317,9 +317,13 @@ body {
     display: inline-block;
     position: relative;
     /* padding: 3rem; */
-    margin: 1rem 0;
+    margin: 1.5rem 0;
     border-radius: 1rem;
     overflow: hidden;
+}
+
+.cocktail-box:first-of-type {
+    margin-top: 3rem;
 }
 
 .cocktail-name {
